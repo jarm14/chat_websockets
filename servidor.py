@@ -19,8 +19,11 @@ class ProtocoloServidor(WebSocketServerProtocol):
 
     def onMessage(self, message, isBinary):
         print("Mensaje recibido: {}".format(message))
-        self.sendMessage("Mensaje recibido: {}".format(message))
+        # self.sendMessage("Mensaje recibido: {}".format(message))
         self.factory.broadcast(message)
+
+    def onClose(self, wasClean, code, reason):
+        self.factory.unregister(self)
 
 
 class TodosContraTodosFactoria(WebSocketServerFactory):
