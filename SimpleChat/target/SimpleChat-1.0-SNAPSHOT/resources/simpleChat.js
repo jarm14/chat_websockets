@@ -36,7 +36,7 @@ function onMessage(evt) {
 }
 
 function acceptValue(element) {
-    websocket.send(element.value + "\n");
+    websocket.send(element.value);
     element.value = "";
     return true;
 }

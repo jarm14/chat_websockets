@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+    window.addEventListener("load", function() {
+        var mySocket = new WebSocket("ws://localhost:8877/ws");
+        mySocket.onmessage = function (event) {
+            var output = document.getElementById("mensajes");
+            if(output.value.length == 0){
+            	output.value = event.data + "\n";
+            }else
+            {
+            	var oldTexts = document.getElementById("mensajes").value;
+            	var text = oldTexts.split("\n");
+            	document.getElementById("mensajes").value = text.join("\n") + event.data;
+            	output.scrollTop = output.scrollHeight;
+            }
+        };
+        var form = document.getElementsByClassName("chatbox");
+        var input = document.getElementById("mensaje");
+        form[0].addEventListener("submit", function (e) {
+            input_text = input.value;
+            mySocket.send(input_text);
+            e.preventDefault()
+            input.value = "";
+        })
+    });
+</script>
+<style>
+    div {
+        margin: 1em;
+    }
+    form {
+        margin: 1em;
+    }
+</style>
+  <title>Chat</title>
+</head>
+<body>
+  <h1>Chat Box</h1>
+    <form class="chatbox">
+        <div>
+        <input id="mensaje"></input>
+        <input type="submit" value="Enviar"></input>
+        </div>
+        <textarea id="mensajes" rows="10" cols="50"></textarea>
+    </form>
+</body>
+</html>
